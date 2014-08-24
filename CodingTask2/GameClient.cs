@@ -10,8 +10,10 @@ namespace CodingTask2
       private string _host;
       private int _port;
       private NetworkStream _networkStream;
+      private readonly byte[] _buffer = new byte[4096];
 
-      public GameClient(): this(new MessageSerializer())
+      public GameClient()
+         : this(new MessageSerializer())
       {
 
       }
@@ -30,27 +32,27 @@ namespace CodingTask2
 
       }
 
-      private void SendMessage(Message message)
+      private void Send(Message message)
       {
-         var messageBytes = _messageSerializer.Serialize(message);
+         var messageBytes = _messageSerializer.ToBytes(message);
          _networkStream.Write(messageBytes, 0, messageBytes.Length);
          _networkStream.Flush();
       }
 
-      public int GetResponse()
+      public Message Receive()
       {
-         return _networkStream.ReadByte();
+         _networkStream.Read(_buffer, 0, _buffer.Length);
+         return _messageSerializer.FromBytes(_buffer);
       }
 
       public void SendHello(string clientName)
       {
-         var helloMessage = new Message
+         var helloMessage = new Message(MessageCode.Hello)
          {
-            Code = MessageCode.Hello,
             Content = Encoding.ASCII.GetBytes(clientName)
          };
 
-         SendMessage(helloMessage);
+         Send(helloMessage);
       }
 
    }

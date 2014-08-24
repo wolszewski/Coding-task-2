@@ -13,9 +13,11 @@ namespace CodingTask2.Tests
           var client = new GameClient();
           client.Connect(host, port);
           client.SendHello("client1");
-          var response = client.GetResponse();
+          var response = client.Receive();
 
-          response.Should().Be((int)MessageCode.Ok);
+          var expected=  new Message(MessageCode.Ok);
+
+          response.ShouldBeEquivalentTo(expected);
        }
     }
 }

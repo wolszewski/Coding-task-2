@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
     <Compile Include="GameClient.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageCode.cs" />
