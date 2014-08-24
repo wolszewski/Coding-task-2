@@ -41,6 +41,8 @@
   <ItemGroup>
     <Compile Include="GameClient.cs" />
     <Compile Include="Message.cs" />
+    <Compile Include="MessageCode.cs" />
+    <Compile Include="MessageSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

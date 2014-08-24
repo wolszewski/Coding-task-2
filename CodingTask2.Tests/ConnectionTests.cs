@@ -1,5 +1,4 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 
 namespace CodingTask2.Tests
@@ -9,17 +8,14 @@ namespace CodingTask2.Tests
        [Test]
        public void HelloTest()
        {
-          const byte BadMsg = 0xFF;
-          const byte Ok = 0xE1;
-
           string host = "localhost";
           int port=9920;
-          var client = new GameClient(host, port);
-          client.Connect();
-          client.SendHello();
+          var client = new GameClient();
+          client.Connect(host, port);
+          client.SendHello("client1");
           var response = client.GetResponse();
 
-          response.Should().Be(Ok);
+          response.Should().Be((int)MessageCode.Ok);
        }
     }
 }

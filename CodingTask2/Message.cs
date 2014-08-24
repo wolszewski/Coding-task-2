@@ -1,12 +1,13 @@
-﻿using System.Text;
-
-namespace CodingTask2
+﻿namespace CodingTask2
 {
    public class Message
    {
-      public byte Code { get; set; }
+      public MessageCode Code { get; set; }
+      public byte[] Content { get; set; }
 
-      public string Content { get; set; }
-
+      public  int GetContentLength()
+      {
+         return Content != null ? Content.Length : 0;
+      }
    }
 }
