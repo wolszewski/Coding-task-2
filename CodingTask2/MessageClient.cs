@@ -1,24 +1,24 @@
 ﻿using System.Net.Sockets;
-using System.Text;
 
 namespace CodingTask2
 {
-   public class GameClient
+   public class MessageClient
    {
+      private const int MaxMessageLength = 4096;
+
       private readonly MessageSerializer _messageSerializer;
+      private readonly byte[] _buffer = new byte[MaxMessageLength];
+
       private TcpClient _tcpClient;
       private string _host;
       private int _port;
       private NetworkStream _networkStream;
-      private readonly byte[] _buffer = new byte[4096];
 
-      public GameClient()
-         : this(new MessageSerializer())
+      public MessageClient(): this(new MessageSerializer())
       {
-
       }
 
-      public GameClient(MessageSerializer messageSerializer)
+      public MessageClient(MessageSerializer messageSerializer)
       {
          _messageSerializer = messageSerializer;
       }
@@ -32,7 +32,7 @@ namespace CodingTask2
 
       }
 
-      private void Send(Message message)
+      public void Send(Message message)
       {
          var messageBytes = _messageSerializer.ToBytes(message);
          _networkStream.Write(messageBytes, 0, messageBytes.Length);
@@ -45,15 +45,10 @@ namespace CodingTask2
          return _messageSerializer.FromBytes(_buffer);
       }
 
-      public void SendHello(string clientName)
+
+      public void Close()
       {
-         var helloMessage = new Message(MessageCode.Hello)
-         {
-            Content = Encoding.ASCII.GetBytes(clientName)
-         };
-
-         Send(helloMessage);
+         _tcpClient.Close();
       }
-
    }
 }

@@ -2,7 +2,7 @@
 {
    public class Message
    {
-      public MessageCode Code { get; set; }
+      public MessageCode Code { get; private set; }
       public byte[] Content { get; set; }
 
       public int GetContentLength()
