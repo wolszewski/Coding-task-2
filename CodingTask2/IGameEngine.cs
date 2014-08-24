@@ -1,6 +1,6 @@
 ﻿namespace CodingTask2
 {
-   public interface IGame
+   public interface IGameEngine
    {
       void Start(string clientName);
       void End();

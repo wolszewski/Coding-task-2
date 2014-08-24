@@ -2,25 +2,25 @@
 
 namespace CodingTask2
 {
-   public class Game : IGame
+   public class GameEngine : IGameEngine
    {
-      readonly MessageClient _messageClient;
-      private const string Host = "localhost";
-      private const int Port = 9920;
+      private readonly MessageClient _messageClient;
+      private readonly ConnectionInfo _connectionInfo;
 
-      public Game()
-         : this(new MessageClient())
+      public GameEngine(ConnectionInfo connectionInfo)
+         : this(new MessageClient(), connectionInfo)
       {
       }
 
-      public Game(MessageClient messageClient)
+      internal GameEngine(MessageClient messageClient, ConnectionInfo connectionInfo)
       {
          _messageClient = messageClient;
+         _connectionInfo = connectionInfo;
       }
 
       public void Start(string clientName)
       {
-         _messageClient.Connect(Host, Port);
+         _messageClient.Connect(_connectionInfo);
 
          var request = Messages.Hello(clientName);
          Send(request);

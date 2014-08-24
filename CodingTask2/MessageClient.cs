@@ -50,5 +50,10 @@ namespace CodingTask2
       {
          _tcpClient.Close();
       }
+
+      public void Connect(ConnectionInfo connectionInfo)
+      {
+         Connect(connectionInfo.Host, connectionInfo.Port);
+      }
    }
 }
