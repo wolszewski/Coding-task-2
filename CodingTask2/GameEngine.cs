@@ -109,7 +109,7 @@ namespace CodingTask2
             return true;
 
          if (response.Code == MessageCode.Nope)
-            return true;
+            return false;
 
          throw new Exception("Nieoczekiwana wiadomość: " + response.Code);
       }
