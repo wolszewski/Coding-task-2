@@ -39,5 +39,30 @@ namespace CodingTask2
       {
          return new Message(MessageCode.Obstacles);
       }
+
+      public static Message Bye()
+      {
+         return new Message(MessageCode.Bye);
+
+      }
+
+      public static Message IWin()
+      {
+         return new Message(MessageCode.IWin);
+      }
+
+      public static Message Unreachable()
+      {
+         return new Message(MessageCode.Unreachable);
+      }
+
+      public static Message Move(Coord moveVector)
+      {
+         var message = new Message(MessageCode.Move)
+         {
+            Content = ContentParser.ToBytes(moveVector)
+         };
+         return message;
+      }
    }
 }

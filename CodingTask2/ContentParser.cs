@@ -2,7 +2,7 @@ using System;
 
 namespace CodingTask2
 {
-   public class ContentParser
+   public static class ContentParser
    {
       const int Int32Size = sizeof(Int32);
 
@@ -28,6 +28,17 @@ namespace CodingTask2
          }
 
          return result;
+      }
+
+      public static byte[] ToBytes(Coord coord)
+      {
+         var x = BitConverter.GetBytes(coord.X);
+         var y = BitConverter.GetBytes(coord.Y);
+         var output = new byte[8];
+         x.CopyTo(output,0);
+         y.CopyTo(output,4);
+
+         return output;
       }
    }
 }

@@ -20,7 +20,7 @@ namespace CodingTask2.Tests
       [TearDown]
       public void TestTearDown()
       {
-         _client.Close();
+         _client.Disconnect();
       }
 
       [Test]

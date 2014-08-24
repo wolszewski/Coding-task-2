@@ -42,6 +42,7 @@
     <Compile Include="ContentParser.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="IGame.cs" />
     <Compile Include="MessageClient.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageCode.cs" />

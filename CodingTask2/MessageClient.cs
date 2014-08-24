@@ -46,7 +46,7 @@ namespace CodingTask2
       }
 
 
-      public void Close()
+      public void Disconnect()
       {
          _tcpClient.Close();
       }

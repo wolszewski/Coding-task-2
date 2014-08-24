@@ -26,5 +26,15 @@ namespace CodingTask2.Tests
 
          result.ShouldBeEquivalentTo(expected);
       }
+
+      [Test]
+      public void CoordToBytesTest()
+      {
+         var expected = new byte[] { 1, 0, 0, 0, 255, 255, 255, 255 };
+         var input = new Coord(1,-1);
+         var result = ContentParser.ToBytes(input);
+
+         result.ShouldAllBeEquivalentTo(expected);
+      }
    }
 }
