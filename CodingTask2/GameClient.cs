@@ -6,7 +6,7 @@ namespace CodingTask2
    {
       private readonly MessageClient _messageClient;
       private readonly ConnectionInfo _connectionInfo;
-      private readonly MessageFactory MessageFactory;
+      private readonly MessageFactory _messageFactory;
 
       public GameClient(ConnectionInfo connectionInfo)
          : this(new MessageClient(), new MessageFactory(), connectionInfo )
@@ -17,23 +17,23 @@ namespace CodingTask2
       {
          _messageClient = messageClient;
          _connectionInfo = connectionInfo;
-         MessageFactory = messageFactory;
+         _messageFactory = messageFactory;
       }
 
-      public void Start(string clientName)
+      public void ConnectAndSayHello(string clientName)
       {
          _messageClient.Connect(_connectionInfo);
 
-         var request = MessageFactory.Hello(clientName);
+         var request = _messageFactory.Hello(clientName);
          Send(request);
 
          var response = GetResponse();
          CheckIfAllowedResponseMessage(response, MessageCode.Ok);
       }
 
-      public void End()
+      public void SayByeAndDisconnect()
       {
-         var request = MessageFactory.Bye();
+         var request = _messageFactory.Bye();
          Send(request);
 
          _messageClient.Disconnect();
@@ -41,7 +41,7 @@ namespace CodingTask2
 
       public Coord GetPlayerPosition()
       {
-         var request = MessageFactory.Pos();
+         var request = _messageFactory.Pos();
          Send(request);
 
          return CoordResponse();
@@ -49,7 +49,7 @@ namespace CodingTask2
 
       public Coord GetTargetPosition()
       {
-         var request = MessageFactory.Target();
+         var request = _messageFactory.Target();
          Send(request);
 
          return CoordResponse();
@@ -57,7 +57,7 @@ namespace CodingTask2
 
       public Coord GetBoardSize()
       {
-         var request = MessageFactory.BoardSize();
+         var request = _messageFactory.BoardSize();
          Send(request);
 
          return CoordResponse();
@@ -65,7 +65,7 @@ namespace CodingTask2
 
       public Coord[] GetObstacles()
       {
-         var request = MessageFactory.Obstacles();
+         var request = _messageFactory.Obstacles();
          Send(request);
 
          return CoordArrayResponse();
@@ -81,7 +81,7 @@ namespace CodingTask2
 
       public bool SayWin()
       {
-         var request = MessageFactory.IWin();
+         var request = _messageFactory.IWin();
          Send(request);
 
          return YesNoResponse();
@@ -89,7 +89,7 @@ namespace CodingTask2
 
       public bool SayUnreachable()
       {
-         var request = MessageFactory.Unreachable();
+         var request = _messageFactory.Unreachable();
          Send(request);
 
          return YesNoResponse();
@@ -97,7 +97,7 @@ namespace CodingTask2
 
       public bool Move(Coord moveVector)
       {
-         var request = MessageFactory.Move(moveVector);
+         var request = _messageFactory.Move(moveVector);
          Send(request);
 
          return YesNoResponse();

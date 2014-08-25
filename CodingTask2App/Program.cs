@@ -1,69 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
 using CodingTask2;
 
 namespace CodingTask2App
 {
-
-   class Program
+   public class Program
    {
-      private static GameData _gameData;
-      private static GameClient _client;
-      private static readonly Coord BoardPosition = new Coord(10,0);
-      private static readonly Dictionary<ConsoleKey,Action>  InputActions = new Dictionary<ConsoleKey, Action>();
+      private static readonly ConsoleRenderer Renderer = new ConsoleRenderer();
+      private static readonly ConsoleInputManager InputManager = new ConsoleInputManager();
+      private static IGame _game;
 
       static void Main(string[] args)
       {
          ConfigureKeys();
 
          var connectionInfo = new ConnectionInfo("localhost", 9920);
-         _client = new GameClient(connectionInfo);
-         _client.Start("client1");
-
-         _gameData = LoadData();
-         var renderer = new ConsoleRenderer();
-
+         _game = new Game("client1", connectionInfo);
+         _game.Start();
          do
          {
-            renderer.RenderGameData(_gameData,BoardPosition);
-            ProcessKey(Console.ReadKey());
-            UpdateGameData();
-         } while (true);
+            _game.UpdateState();
+            Renderer.RenderGameData(_game.Data, GuiData.BoardPosition);
+            InputManager.ProcessKey(Console.ReadKey(true));
+           
+         } while (_game.IsActive);
 
+         Console.WriteLine("Gra zatrzymana. Naciśnij enter aby zamknąć");
+         Console.ReadLine();
       }
 
       private static void ConfigureKeys()
       {
-         InputActions.Add(ConsoleKey.W, ()=> _client.Move(Directions.Up));
-         InputActions.Add(ConsoleKey.S, ()=> _client.Move(Directions.Down));
-         InputActions.Add(ConsoleKey.A, ()=> _client.Move(Directions.Left));
-         InputActions.Add(ConsoleKey.D, ()=> _client.Move(Directions.Right));
-         InputActions.Add(ConsoleKey.I, ()=> _client.SayWin());
-         InputActions.Add(ConsoleKey.U, ()=> _client.SayUnreachable());
+         InputManager.Bind(ConsoleKey.W, () => _game.MovePlayer(Directions.Up));
+         InputManager.Bind(ConsoleKey.S, () => _game.MovePlayer(Directions.Down));
+         InputManager.Bind(ConsoleKey.A, () => _game.MovePlayer(Directions.Left));
+         InputManager.Bind(ConsoleKey.D, () => _game.MovePlayer(Directions.Right));
+         InputManager.Bind(ConsoleKey.I, () => _game.CheckWin());
+         InputManager.Bind(ConsoleKey.U, () => _game.CheckUnreachable());
+         InputManager.Bind(ConsoleKey.X, () => _game.Stop());
       }
 
-      private static GameData LoadData()
-      {
-         return new GameData
-         {
-            Player = _client.GetPlayerPosition(),
-            Target = _client.GetTargetPosition(),
-            BoardSize = _client.GetBoardSize(),
-            Obstacles = _client.GetObstacles()
-         };
-      }
 
-      private static void UpdateGameData()
-      {
-         _gameData.Player = _client.GetPlayerPosition();
-      }
-
-      private static void ProcessKey(ConsoleKeyInfo keyInfo)
-      {
-         Action action;
-         InputActions.TryGetValue(keyInfo.Key, out action);
-         if (action != null)
-            action();
-      }
    }
 }

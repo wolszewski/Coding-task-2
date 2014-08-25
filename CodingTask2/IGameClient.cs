@@ -2,8 +2,8 @@
 {
    public interface IGameClient
    {
-      void Start(string clientName);
-      void End();
+      void ConnectAndSayHello(string clientName);
+      void SayByeAndDisconnect();
       Coord GetPlayerPosition();
       Coord GetTargetPosition();
       Coord GetBoardSize();

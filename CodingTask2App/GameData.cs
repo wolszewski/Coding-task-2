@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using CodingTask2;
+﻿using CodingTask2;
 
 namespace CodingTask2App
 {
