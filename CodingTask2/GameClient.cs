@@ -6,23 +6,25 @@ namespace CodingTask2
    {
       private readonly MessageClient _messageClient;
       private readonly ConnectionInfo _connectionInfo;
+      private readonly MessageFactory MessageFactory;
 
       public GameClient(ConnectionInfo connectionInfo)
-         : this(new MessageClient(), connectionInfo)
+         : this(new MessageClient(), new MessageFactory(), connectionInfo )
       {
       }
 
-      internal GameClient(MessageClient messageClient, ConnectionInfo connectionInfo)
+      internal GameClient(MessageClient messageClient, MessageFactory messageFactory, ConnectionInfo connectionInfo)
       {
          _messageClient = messageClient;
          _connectionInfo = connectionInfo;
+         MessageFactory = messageFactory;
       }
 
       public void Start(string clientName)
       {
          _messageClient.Connect(_connectionInfo);
 
-         var request = Messages.Hello(clientName);
+         var request = MessageFactory.Hello(clientName);
          Send(request);
 
          var response = GetResponse();
@@ -31,7 +33,7 @@ namespace CodingTask2
 
       public void End()
       {
-         var request = Messages.Bye();
+         var request = MessageFactory.Bye();
          Send(request);
 
          _messageClient.Disconnect();
@@ -39,7 +41,7 @@ namespace CodingTask2
 
       public Coord GetPlayerPosition()
       {
-         var request = Messages.Pos();
+         var request = MessageFactory.Pos();
          Send(request);
 
          return CoordResponse();
@@ -47,7 +49,7 @@ namespace CodingTask2
 
       public Coord GetTargetPosition()
       {
-         var request = Messages.Target();
+         var request = MessageFactory.Target();
          Send(request);
 
          return CoordResponse();
@@ -55,7 +57,7 @@ namespace CodingTask2
 
       public Coord GetBoardSize()
       {
-         var request = Messages.BoardSize();
+         var request = MessageFactory.BoardSize();
          Send(request);
 
          return CoordResponse();
@@ -63,7 +65,7 @@ namespace CodingTask2
 
       public Coord[] GetObstacles()
       {
-         var request = Messages.Obstacles();
+         var request = MessageFactory.Obstacles();
          Send(request);
 
          return CoordArrayResponse();
@@ -79,7 +81,7 @@ namespace CodingTask2
 
       public bool SayWin()
       {
-         var request = Messages.IWin();
+         var request = MessageFactory.IWin();
          Send(request);
 
          return YesNoResponse();
@@ -87,7 +89,7 @@ namespace CodingTask2
 
       public bool SayUnreachable()
       {
-         var request = Messages.Unreachable();
+         var request = MessageFactory.Unreachable();
          Send(request);
 
          return YesNoResponse();
@@ -95,7 +97,7 @@ namespace CodingTask2
 
       public bool Move(Coord moveVector)
       {
-         var request = Messages.Move(moveVector);
+         var request = MessageFactory.Move(moveVector);
          Send(request);
 
          return YesNoResponse();

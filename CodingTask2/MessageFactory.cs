@@ -2,9 +2,9 @@ using System.Text;
 
 namespace CodingTask2
 {
-   public static class Messages
+   public  class MessageFactory
    {
-      public static Message Hello(string clientName)
+      public  Message Hello(string clientName)
       {
          return new Message(MessageCode.Hello)
          {
@@ -13,50 +13,50 @@ namespace CodingTask2
 
       }
 
-      public static Message Pos()
+      public Message Pos()
       {
          return new Message(MessageCode.Pos);
       }
-      public static Message Target()
+      public Message Target()
       {
          return new Message(MessageCode.Target);
       }
-      public static Message BoardSize()
+      public Message BoardSize()
       {
          return new Message(MessageCode.BoardSize);
       }
 
-      public static Message PosData()
+      public Message PosData()
       {
          return new Message(MessageCode.PosData);
       }
-      public static Message Ok()
+      public Message Ok()
       {
          return new Message(MessageCode.Ok);
       }
 
-      public static Message Obstacles()
+      public Message Obstacles()
       {
          return new Message(MessageCode.Obstacles);
       }
 
-      public static Message Bye()
+      public Message Bye()
       {
          return new Message(MessageCode.Bye);
 
       }
 
-      public static Message IWin()
+      public Message IWin()
       {
          return new Message(MessageCode.IWin);
       }
 
-      public static Message Unreachable()
+      public Message Unreachable()
       {
          return new Message(MessageCode.Unreachable);
       }
 
-      public static Message Move(Coord moveVector)
+      public Message Move(Coord moveVector)
       {
          var message = new Message(MessageCode.Move)
          {

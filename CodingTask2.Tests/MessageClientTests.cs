@@ -7,6 +7,7 @@ namespace CodingTask2.Tests
    public class MessageClientTests
    {
       private MessageClient _client;
+      private readonly MessageFactory _messageFactory = new MessageFactory();
       private const string host = "localhost";
       private const int port = 9920;
 
@@ -26,16 +27,16 @@ namespace CodingTask2.Tests
       [Test]
       public void HelloTest()
       {
-         _client.Send(Messages.Hello("client1"));
+         _client.Send(_messageFactory.Hello("client1"));
          var response = _client.Receive();
 
-         var expected = Messages.Ok();
+         var expected = _messageFactory.Ok();
          response.ShouldBeEquivalentTo(expected);
       }
 
       public void SayHello()
       {
-         _client.Send(Messages.Hello("client1"));
+         _client.Send(_messageFactory.Hello("client1"));
          _client.Receive();
       }
 
@@ -43,7 +44,7 @@ namespace CodingTask2.Tests
       public void PosDataTest()
       {
          SayHello();
-         _client.Send(Messages.Pos());
+         _client.Send(_messageFactory.Pos());
          var response = _client.Receive();
 
          response.Code.ShouldBeEquivalentTo(MessageCode.PosData);
