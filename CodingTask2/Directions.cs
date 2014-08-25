@@ -1,6 +1,4 @@
-using CodingTask2;
-
-namespace CodingTask2App
+namespace CodingTask2
 {
    public static class Directions
    {

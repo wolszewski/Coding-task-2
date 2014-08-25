@@ -5,23 +5,24 @@ namespace CodingTask2App
 {
    public class ConsoleInputManager
    {
-      private readonly Dictionary<ConsoleKey, Action> InputActions = new Dictionary<ConsoleKey, Action>();
+      private readonly Dictionary<ConsoleKey, Action> _inputActions = new Dictionary<ConsoleKey, Action>();
 
       public void Bind(ConsoleKey key, Action action)
       {
-         InputActions.Add(key, action);
+         _inputActions.Add(key, action);
       }
 
       public Action GetActionForKey(ConsoleKey key)
       {
          Action action;
-         InputActions.TryGetValue(key, out action);
+         _inputActions.TryGetValue(key, out action);
          return action;
       }
 
-      public void ProcessKey(ConsoleKeyInfo consoleKey)
+      public void ProcessKey()
       {
-         var action = GetActionForKey(consoleKey.Key);
+         var pressed = Console.ReadKey(true);
+         var action = GetActionForKey(pressed.Key);
          if (action != null)
             action();
       }

@@ -14,17 +14,18 @@ namespace CodingTask2App
          ConfigureKeys();
 
          var connectionInfo = new ConnectionInfo("localhost", 9920);
-         _game = new Game("client1", connectionInfo);
+         _game = new Game("client1", connectionInfo,new AStarPathFinder());
          _game.Start();
          do
          {
             _game.UpdateState();
             Renderer.RenderGameData(_game.Data, GuiData.BoardPosition);
-            InputManager.ProcessKey(Console.ReadKey(true));
+            InputManager.ProcessKey();
            
          } while (_game.IsActive);
 
-         Console.WriteLine("Gra zatrzymana. Naciśnij enter aby zamknąć");
+         Console.WriteLine(GuiData.GameStateMessages[_game.State]);
+         Console.WriteLine("Naciśnij enter aby zamknąć okno");
          Console.ReadLine();
       }
 
@@ -37,6 +38,7 @@ namespace CodingTask2App
          InputManager.Bind(ConsoleKey.I, () => _game.CheckWin());
          InputManager.Bind(ConsoleKey.U, () => _game.CheckUnreachable());
          InputManager.Bind(ConsoleKey.X, () => _game.Stop());
+         InputManager.Bind(ConsoleKey.Q, () => _game.AutoFindSolution());
       }
 
 

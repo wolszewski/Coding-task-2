@@ -116,7 +116,6 @@ namespace CodingTask2
          throw new Exception("Nieoczekiwana wiadomość: " + response.Code);
       }
 
-
       private Coord CoordResponse()
       {
          var response = GetResponse();

@@ -1,6 +1,4 @@
-using CodingTask2;
-
-namespace CodingTask2App
+namespace CodingTask2
 {
    public interface IGame
    {
@@ -10,7 +8,9 @@ namespace CodingTask2App
       void CheckUnreachable();
       void Stop();
       bool IsActive { get; }
+      GameState State { get; }
       GameData Data { get; }
       void UpdateState();
+      void AutoFindSolution();
    }
 }
