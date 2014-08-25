@@ -28,7 +28,7 @@ namespace CodingTask2
          Send(request);
 
          var response = GetResponse();
-         CheckIfAllowedResponseMessage(response, MessageCode.Ok);
+         GuardMessageType(response, MessageCode.Ok);
       }
 
       public void SayByeAndDisconnect()
@@ -74,7 +74,7 @@ namespace CodingTask2
       private Coord[] CoordArrayResponse()
       {
          var response = GetResponse();
-         CheckIfAllowedResponseMessage(response, MessageCode.PosList);
+         GuardMessageType(response, MessageCode.PosList);
 
          return ContentParser.ToCoordArray(response.Content);
       }
@@ -84,7 +84,7 @@ namespace CodingTask2
          var request = _messageFactory.IWin();
          Send(request);
 
-         return YesNoResponse();
+         return BoolResponse();
       }
 
       public bool SayUnreachable()
@@ -92,7 +92,7 @@ namespace CodingTask2
          var request = _messageFactory.Unreachable();
          Send(request);
 
-         return YesNoResponse();
+         return BoolResponse();
       }
 
       public bool Move(Coord moveVector)
@@ -100,10 +100,10 @@ namespace CodingTask2
          var request = _messageFactory.Move(moveVector);
          Send(request);
 
-         return YesNoResponse();
+         return BoolResponse();
       }
 
-      private bool YesNoResponse()
+      private bool BoolResponse()
       {
          var response = GetResponse();
 
@@ -119,12 +119,12 @@ namespace CodingTask2
       private Coord CoordResponse()
       {
          var response = GetResponse();
-         CheckIfAllowedResponseMessage(response, MessageCode.PosData);
+         GuardMessageType(response, MessageCode.PosData);
 
          return ContentParser.ToCoord(response.Content);
       }
 
-      private void CheckIfAllowedResponseMessage(Message response, MessageCode expectedMessageCode)
+      private void GuardMessageType(Message response, MessageCode expectedMessageCode)
       {
          if (response.Code != expectedMessageCode)
             throw new Exception("Nieoczekiwana wiadomość: " + response.Code);
