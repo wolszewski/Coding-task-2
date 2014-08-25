@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text;
+using System.Collections.Generic;
 using CodingTask2;
 
 namespace CodingTask2App
@@ -7,126 +7,63 @@ namespace CodingTask2App
 
    class Program
    {
-      private static GameEngine _game;
-      private static Board _board;
-      private static string _message;
+      private static GameData _gameData;
+      private static GameClient _client;
+      private static readonly Coord BoardPosition = new Coord(10,0);
+      private static readonly Dictionary<ConsoleKey,Action>  InputActions = new Dictionary<ConsoleKey, Action>();
 
       static void Main(string[] args)
       {
-         var connectionInfo = new ConnectionInfo("localhost",9920);
-         _game = new GameEngine(connectionInfo);
-         _board = new Board();
-         _game.Start("client1");
+         ConfigureKeys();
 
-         ConsoleKeyInfo pressedKey;
+         var connectionInfo = new ConnectionInfo("localhost", 9920);
+         _client = new GameClient(connectionInfo);
+         _client.Start("client1");
+
+         _gameData = LoadData();
+         var renderer = new ConsoleRenderer();
+
          do
          {
-            RenderFrame(_game, _board);
-            pressedKey = Console.ReadKey();
-            ProcessInput(pressedKey);
-         } while (pressedKey.Key != ConsoleKey.X);
-       
+            renderer.RenderGameData(_gameData,BoardPosition);
+            ProcessKey(Console.ReadKey());
+            UpdateGameData();
+         } while (true);
+
       }
 
-      private static void ProcessInput(ConsoleKeyInfo key)
+      private static void ConfigureKeys()
       {
-         _message = "";
-         switch (key.Key)
+         InputActions.Add(ConsoleKey.W, ()=> _client.Move(Directions.Up));
+         InputActions.Add(ConsoleKey.S, ()=> _client.Move(Directions.Down));
+         InputActions.Add(ConsoleKey.A, ()=> _client.Move(Directions.Left));
+         InputActions.Add(ConsoleKey.D, ()=> _client.Move(Directions.Right));
+         InputActions.Add(ConsoleKey.I, ()=> _client.SayWin());
+         InputActions.Add(ConsoleKey.U, ()=> _client.SayUnreachable());
+      }
+
+      private static GameData LoadData()
+      {
+         return new GameData
          {
-            case ConsoleKey.X:
-               _game.End();
-               break;
-
-            case ConsoleKey.W:
-               Move(Directions.Up);
-               break;
-
-            case ConsoleKey.S:
-               Move(Directions.Down);
-               break;
-
-
-            case ConsoleKey.A:
-               Move(Directions.Left);
-               break;
-
-
-            case ConsoleKey.D:
-               Move(Directions.Right);
-               break;
-
-            default:
-               return;               
-         }
-      }
-
-      private static void Move(Coord direction)
-      {
-        var succes = _game.Move(direction);
-         if(!succes)
-            _message = "Nie można wykonać ruchu";
-      }
-
-      private static void RenderFrame(GameEngine game, Board board)
-      {
-         Console.Clear();
-         var state = GetGameState(game);
-         var boardSize = game.GetBoardSize();
-         Console.WriteLine("Board size: " + boardSize);
-         Console.WriteLine("Actual: " + state.ActualPosition);
-         Console.WriteLine("Target: " + state.TargetPosition);
-
-         board.Size = boardSize;
-         var obstacles = game.GetObstacles();
-         board.Clear();
-         board.SetObstacles(obstacles);
-         board.SetState(state);
-         RenderBoard(board);
-
-         if(!string.IsNullOrEmpty(_message))
-            Console.WriteLine(_message);
-      }
-
-      private static void RenderBoard(Board board)
-      {
-         var sb = new StringBuilder(2504);
-
-         for (int y = 0; y < board.Size.Y; y++)
-         {
-            for (int x = 0; x < board.Size.X; x++)
-            {
-               sb.Append(GetCharForElement(board.GetField(x, y)));
-            }
-            sb.AppendLine();
-         }
-         Console.WriteLine(sb.ToString());
-      }
-
-      private static char GetCharForElement(BoardElement element)
-      {
-         switch (element)
-         {
-            case BoardElement.None:
-               return ' ';
-            case BoardElement.Ostacle:
-               return 'O';
-            case BoardElement.Player:
-               return 'P';
-            case BoardElement.Target:
-               return 'X';
-            default:
-               throw new Exception("Nieobsługiwany typ obiektu");
-
-         }
-      }
-
-      private static GameState GetGameState(GameEngine game)
-      {
-         return new GameState
-         {
-            ActualPosition = game.GetActualPosition(), 
-            TargetPosition = game.GetTargetPosition()
+            Player = _client.GetPlayerPosition(),
+            Target = _client.GetTargetPosition(),
+            BoardSize = _client.GetBoardSize(),
+            Obstacles = _client.GetObstacles()
          };
+      }
+
+      private static void UpdateGameData()
+      {
+         _gameData.Player = _client.GetPlayerPosition();
+      }
+
+      private static void ProcessKey(ConsoleKeyInfo keyInfo)
+      {
+         Action action;
+         InputActions.TryGetValue(keyInfo.Key, out action);
+         if (action != null)
+            action();
       }
    }
 }

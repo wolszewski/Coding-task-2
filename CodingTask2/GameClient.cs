@@ -2,17 +2,17 @@
 
 namespace CodingTask2
 {
-   public class GameEngine : IGameEngine
+   public class GameClient : IGameClient
    {
       private readonly MessageClient _messageClient;
       private readonly ConnectionInfo _connectionInfo;
 
-      public GameEngine(ConnectionInfo connectionInfo)
+      public GameClient(ConnectionInfo connectionInfo)
          : this(new MessageClient(), connectionInfo)
       {
       }
 
-      internal GameEngine(MessageClient messageClient, ConnectionInfo connectionInfo)
+      internal GameClient(MessageClient messageClient, ConnectionInfo connectionInfo)
       {
          _messageClient = messageClient;
          _connectionInfo = connectionInfo;
@@ -37,7 +37,7 @@ namespace CodingTask2
          _messageClient.Disconnect();
       }
 
-      public Coord GetActualPosition()
+      public Coord GetPlayerPosition()
       {
          var request = Messages.Pos();
          Send(request);

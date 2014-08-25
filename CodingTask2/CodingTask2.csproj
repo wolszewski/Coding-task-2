@@ -42,8 +42,8 @@
     <Compile Include="ConnectionInfo.cs" />
     <Compile Include="ContentParser.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="GameEngine.cs" />
-    <Compile Include="IGameEngine.cs" />
+    <Compile Include="GameClient.cs" />
+    <Compile Include="IGameClient.cs" />
     <Compile Include="MessageClient.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageCode.cs" />

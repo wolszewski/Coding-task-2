@@ -1,10 +1,10 @@
 ﻿namespace CodingTask2
 {
-   public interface IGameEngine
+   public interface IGameClient
    {
       void Start(string clientName);
       void End();
-      Coord GetActualPosition();
+      Coord GetPlayerPosition();
       Coord GetTargetPosition();
       Coord GetBoardSize();
       Coord[] GetObstacles();
