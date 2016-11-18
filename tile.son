@@ -1,8 +1,8 @@
 {
   "cssFiles": [
-    "//fonts.googleapis.com/css?family=Fira+Sans",
-    "//fontawesome.io/assets/font-awesome/css/font-awesome.css",
-    "//nltapp0071wap-test-trans-calculator-web-app.azurewebsites.net/assets/tile/tile.css"
+    "https://fonts.googleapis.com/css?family=Fira+Sans",
+    "https://fontawesome.io/assets/font-awesome/css/font-awesome.css",
+    "https://nltapp0071wap-test-trans-calculator-web-app.azurewebsites.net/assets/tile/tile.css"
   ],
   "tiles": [
     {
